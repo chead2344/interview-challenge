@@ -37,3 +37,5 @@ yarn test
 - I have kept the styling to a minimum except a simple selected state when items are clicked.
 
 - The tests are written with `jest` and `react-testing-library`. The reason I use `react-testing-library` is because it encourages writing tests that verify the behaviour instead of the implementation. I also tend to prefer writing tests from the outside-in. I have written some high level integration tests that cover the above scenarios.
+
+- Having slept on the implementation, I didn't like the fact that the `selectedItems` were being passed around to multiple components as props. I thought it would be a cleaner implementation to use React context for this instead and a good oppportunity to demonstrate why it is important to test the behaviour and not the implementation. As can be seen from the commit history, even after such a large refactor, the tests continued to work.
