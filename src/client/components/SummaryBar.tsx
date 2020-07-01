@@ -1,6 +1,7 @@
 import React from "react";
-import { MenuItemData } from "../types";
 import { useSelectedItemsContext } from "../hooks/useSelectedItems";
+import { MenuItemData } from "../types";
+import DietaryFilter from "./DietaryFilter";
 
 const flattenDietaries = (items: MenuItemData[]) =>
   items.reduce((acc, val) => acc.concat(val.dietaries), [] as string[]);
@@ -14,7 +15,18 @@ const countUniqueEntries = (dietaries: string[]) =>
     {} as { [field: string]: number }
   );
 
-const SummaryBar: React.FC = () => {
+type Props = {
+  items: MenuItemData[];
+  onDietaryFilterClicked: (name: string) => void;
+  selectedDietaryFilters: string[];
+};
+
+const SummaryBar: React.FC<Props> = ({
+  items,
+  onDietaryFilterClicked,
+  selectedDietaryFilters,
+}) => {
+  const uniqueDietaries = new Set(flattenDietaries(items));
   const { selectedItems } = useSelectedItemsContext();
   const groupedDietaries = countUniqueEntries(flattenDietaries(selectedItems));
   return (
@@ -30,12 +42,19 @@ const SummaryBar: React.FC = () => {
             className="col-6 menu-summary-right"
             data-testid="selected-items-dietaries"
           >
-            {Object.keys(groupedDietaries).map((dietary) => {
+            {Array.from(uniqueDietaries).map((dietary) => {
               const count = groupedDietaries[dietary];
+              // const selected = selectedDietaryFilters.find(
+              //   (_) => _ === dietary
+              // );
               return (
-                <React.Fragment key={dietary}>
-                  {count}x <span className="dietary">{dietary}</span>
-                </React.Fragment>
+                <DietaryFilter
+                  key={dietary}
+                  count={count || 0}
+                  name={dietary}
+                  onClick={() => onDietaryFilterClicked(dietary)}
+                  // selected={!!selected}
+                />
               );
             })}
           </div>

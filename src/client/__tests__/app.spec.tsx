@@ -203,7 +203,7 @@ describe("App tests", () => {
     );
   });
 
-  it("should show the total number of each dietary type selected in the header", async () => {
+  it("should show the all of the dietary types in the header", async () => {
     render(<App />);
 
     // Wait for the data to load.
