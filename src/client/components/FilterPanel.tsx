@@ -3,11 +3,11 @@ import { useSelectedItemsContext } from "../hooks/useSelectedItems";
 import { MenuItemData } from "../types";
 import FilterItem from "./FilterItem";
 
-type IProps = {
+type Props = {
   initialItems: MenuItemData[];
 };
 
-const FilterPanel: React.FC<IProps> = ({ initialItems }) => {
+export default function FilterPanel({ initialItems }: Props) {
   const { selectedItems, onAdd } = useSelectedItemsContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState(initialItems);
@@ -44,6 +44,4 @@ const FilterPanel: React.FC<IProps> = ({ initialItems }) => {
       </ul>
     </>
   );
-};
-
-export default FilterPanel;
+}

@@ -6,19 +6,15 @@ type Props = {
   selectedDietaryFilters: string[];
 };
 
-const MenuPreview: React.FC<Props> = ({ selectedDietaryFilters }) => {
+export default function MenuPreview({ selectedDietaryFilters }: Props) {
   const { selectedItems, onRemove } = useSelectedItemsContext();
   const filteredItems = selectedDietaryFilters.length
     ? selectedItems.filter((selectedItem) => {
-        if (
-          selectedItem.dietaries.some((_) =>
-            selectedDietaryFilters.find((x) => x === _)
-          )
-        ) {
-          return true;
-        }
+        const isFiltered = selectedItem.dietaries.some((_) =>
+          selectedDietaryFilters.find((x) => x === _)
+        );
 
-        return false;
+        return isFiltered;
       })
     : selectedItems;
 
@@ -34,6 +30,4 @@ const MenuPreview: React.FC<Props> = ({ selectedDietaryFilters }) => {
       ))}
     </ul>
   );
-};
-
-export default MenuPreview;
+}

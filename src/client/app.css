@@ -24,6 +24,10 @@
   color: #fff;
 }
 
+.dietary.selected {
+  background-color: #61c685;
+}
+
 .menu-summary-left {
   font-weight: bold;
 }

@@ -203,7 +203,7 @@ describe("App tests", () => {
     );
   });
 
-  it("should show the all of the dietary types in the header", async () => {
+  it("should show all of the dietary types in the header initially", async () => {
     render(<App />);
 
     // Wait for the data to load.
@@ -211,29 +211,9 @@ describe("App tests", () => {
       name: /Search result - Kale Caesar Pasta, Turmeric Satay Broccoli & Lemon Cashew Greens/i,
     });
 
-    // There should be no dietary types initially
+    // Ensure all dietaries are shown initially
     expect(screen.getByTestId("selected-items-dietaries")).toHaveTextContent(
-      ""
-    );
-
-    // Click two items
-    fireEvent.click(
-      screen.getByRole("listitem", {
-        name: /Search result - Kale Caesar Pasta, Turmeric Satay Broccoli & Lemon Cashew Greens/i,
-      })
-    );
-
-    fireEvent.click(
-      screen.getByRole("listitem", {
-        name: /Search result - Dill & Swiss Chard Potato Cakes, Summer Tabbouleh & Roasted Roots/i,
-      })
-    );
-
-    // Ensure the dietaries are updated
-    await waitFor(() =>
-      expect(screen.getByTestId("selected-items-dietaries")).toHaveTextContent(
-        `2x v2x ve2x df2x gf2x n!`
-      )
+      `0x v0x ve0x df0x gf0x n!0x rsf`
     );
   });
 });

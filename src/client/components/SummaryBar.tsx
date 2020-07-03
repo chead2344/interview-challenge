@@ -2,18 +2,7 @@ import React from "react";
 import { useSelectedItemsContext } from "../hooks/useSelectedItems";
 import { MenuItemData } from "../types";
 import DietaryFilter from "./DietaryFilter";
-
-const flattenDietaries = (items: MenuItemData[]) =>
-  items.reduce((acc, val) => acc.concat(val.dietaries), [] as string[]);
-
-const countUniqueEntries = (dietaries: string[]) =>
-  dietaries.reduce(
-    (acc, current) => ({
-      ...acc,
-      [current]: acc[current] ? acc[current] + 1 : 1,
-    }),
-    {} as { [field: string]: number }
-  );
+import { flattenDietaries, countUniqueDietaries } from "../utils";
 
 type Props = {
   items: MenuItemData[];
@@ -21,14 +10,17 @@ type Props = {
   selectedDietaryFilters: string[];
 };
 
-const SummaryBar: React.FC<Props> = ({
+export default function SummaryBar({
   items,
   onDietaryFilterClicked,
   selectedDietaryFilters,
-}) => {
+}: Props) {
   const uniqueDietaries = new Set(flattenDietaries(items));
   const { selectedItems } = useSelectedItemsContext();
-  const groupedDietaries = countUniqueEntries(flattenDietaries(selectedItems));
+  const groupedDietaries = countUniqueDietaries(
+    flattenDietaries(selectedItems)
+  );
+
   return (
     <div className="menu-summary">
       <div className="container">
@@ -44,16 +36,17 @@ const SummaryBar: React.FC<Props> = ({
           >
             {Array.from(uniqueDietaries).map((dietary) => {
               const count = groupedDietaries[dietary];
-              // const selected = selectedDietaryFilters.find(
-              //   (_) => _ === dietary
-              // );
+              const selected = selectedDietaryFilters.some(
+                (_) => _ === dietary
+              );
+
               return (
                 <DietaryFilter
                   key={dietary}
                   count={count || 0}
                   name={dietary}
                   onClick={() => onDietaryFilterClicked(dietary)}
-                  // selected={!!selected}
+                  selected={selected}
                 />
               );
             })}
@@ -62,6 +55,4 @@ const SummaryBar: React.FC<Props> = ({
       </div>
     </div>
   );
-};
-
-export default SummaryBar;
+}
